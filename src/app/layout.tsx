@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import EntryEventPopup from "./components/EntryEventPopup";
 
 export const metadata: Metadata = {
   title: "GURAPA LAB",
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body>
         <Header />
         <main style={{ maxWidth: 1120, margin: "0 auto", padding: 24 }}>
+          <EntryEventPopup/>
           {children}
         </main>
         <Footer />
