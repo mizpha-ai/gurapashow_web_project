@@ -16,10 +16,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body>
+      <body className="min-h-screen bg-neutral-950">
         <Header />
-        <main style={{ maxWidth: 1120, margin: "0 auto", padding: 24 }}>
-          <EntryEventPopup/>
+        <main className="w-full">
+          <EntryEventPopup />
           {children}
         </main>
         <Footer />

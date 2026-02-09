@@ -10,10 +10,10 @@ const MENUS: MenuItem[] = [
   { href: "/", label: "HOME" },
   { href: "/group-buy", label: "공동구매" },
   { href: "/brands", label: "입점브랜드" },
-  { href: "/about", label: "소개" },
   { href: "/support", label: "고객센터" },
 ];
 
+// 홈/브랜드 스토리텔링 감성 유지용(드롭다운 추천 리스트)
 const FEATURED_BRANDS = [
   { name: "AURORA ATELIER", desc: "Modern tailoring", href: "/brands#aurora" },
   { name: "NOIR STUDIO", desc: "Monochrome essentials", href: "/brands#noir" },
@@ -23,17 +23,20 @@ const FEATURED_BRANDS = [
   { name: "RARE OBJECTS", desc: "Accessories", href: "/brands#rare" },
 ];
 
+const navPillBase =
+  "rounded-full px-5 py-2.5 text-sm font-extrabold tracking-[-0.01em] transition " +
+  "focus:outline-none focus:ring-2 focus:ring-white/15";
+
+const navPillActive = "bg-white text-neutral-950";
+const navPillIdle = "text-neutral-200 hover:bg-white/10";
+
 export default function Nav() {
   const pathname = usePathname();
   const isActive = (href: string) => pathname === href;
   const isBrandsActive = pathname?.startsWith("/brands");
 
   const [brandsOpen, setBrandsOpen] = useState(false);
-
-  // ✅ 클릭 후 재오픈 방지 잠금
   const lockRef = useRef(false);
-
-  // ✅ 바깥 클릭 닫기
   const wrapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -78,7 +81,6 @@ export default function Nav() {
               key={m.href}
               ref={wrapRef}
               className="relative"
-              // ✅ 마우스가 실제로 움직여야 열림 (라우트 이동 후 자동 재오픈 방지)
               onMouseMove={() => {
                 if (lockRef.current) return;
                 if (!brandsOpen) setBrandsOpen(true);
@@ -112,25 +114,21 @@ export default function Nav() {
                     : "opacity-0 translate-y-1 pointer-events-none",
                 ].join(" ")}
               >
-                {/* ✅ 공백(데드존) 없애는 투명 브릿지: mt-3(12px) 만큼 위로 덮어줌 */}
-                <span
-                  aria-hidden
-                  className="absolute left-0 right-0 -top-3 h-3"
-                />
+                <span aria-hidden className="absolute left-0 right-0 -top-3 h-3" />
 
                 {/* caret */}
-                <div className="mx-auto h-2 w-2 rotate-45 border-l border-t border-neutral-200 bg-white" />
+                <div className="mx-auto h-2 w-2 rotate-45 border-l border-t border-white/10 bg-neutral-950" />
 
-                <div className="mt-[-4px] overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-[0_24px_70px_rgba(17,24,39,0.16)]">
-                  <div className="border-b border-neutral-200 px-6 py-5">
-                    <div className="text-xs font-extrabold tracking-[0.14em] text-neutral-500">
+                <div className="mt-[-4px] overflow-hidden rounded-2xl border border-white/10 bg-neutral-950 shadow-[0_24px_70px_rgba(0,0,0,0.45)]">
+                  <div className="border-b border-white/10 px-6 py-5">
+                    <div className="text-xs font-extrabold tracking-[0.14em] text-neutral-300">
                       BRANDS
                     </div>
-                    <div className="mt-1 text-sm font-black tracking-[-0.01em] text-neutral-950">
+                    <div className="mt-1 text-sm font-black tracking-[-0.01em] text-white">
                       추천 브랜드 바로가기
                     </div>
-                    <div className="mt-1 text-xs font-semibold text-neutral-500">
-                      미팅용 구성(임시)
+                    <div className="mt-1 text-xs font-semibold text-neutral-400">
+                      홈의 “소개/갤러리” 섹션과 톤을 맞춘 구성
                     </div>
                   </div>
 
@@ -140,28 +138,28 @@ export default function Nav() {
                         key={b.href}
                         href={b.href}
                         onClick={() => closeAndLock()}
-                        className="group/item flex items-start justify-between gap-3 rounded-xl px-4 py-3 transition hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-neutral-950/10"
+                        className="group/item flex items-start justify-between gap-3 rounded-xl px-4 py-3 transition hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-white/10"
                       >
                         <div className="min-w-0">
-                          <div className="truncate text-sm font-black text-neutral-950">
+                          <div className="truncate text-sm font-black text-white">
                             {b.name}
                           </div>
-                          <div className="mt-1 truncate text-xs font-semibold text-neutral-500">
+                          <div className="mt-1 truncate text-xs font-semibold text-neutral-400">
                             {b.desc}
                           </div>
                         </div>
-                        <span className="pt-0.5 text-xs font-black text-neutral-300 transition group-hover/item:text-neutral-700">
+                        <span className="pt-0.5 text-xs font-black text-neutral-600 transition group-hover/item:text-white">
                           →
                         </span>
                       </Link>
                     ))}
                   </div>
 
-                  <div className="border-t border-neutral-200 px-4 py-3">
+                  <div className="border-t border-white/10 px-4 py-3">
                     <Link
                       href="/brands"
                       onClick={() => closeAndLock()}
-                      className="flex items-center justify-between rounded-xl bg-neutral-950 px-4 py-3 text-sm font-extrabold text-white hover:opacity-90"
+                      className="flex items-center justify-between rounded-xl bg-white px-4 py-3 text-sm font-extrabold text-neutral-950 hover:opacity-90"
                     >
                       전체 브랜드 보기
                       <span className="text-xs font-black">→</span>
@@ -189,10 +187,3 @@ export default function Nav() {
     </nav>
   );
 }
-
-const navPillBase =
-  "rounded-full px-5 py-2.5 text-sm font-extrabold tracking-[-0.01em] transition " +
-  "focus:outline-none focus:ring-2 focus:ring-neutral-950/10";
-
-const navPillActive = "bg-neutral-950 text-white";
-const navPillIdle = "text-neutral-900 hover:bg-neutral-100";
